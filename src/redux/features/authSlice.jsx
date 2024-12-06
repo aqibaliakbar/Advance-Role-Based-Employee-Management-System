@@ -49,16 +49,20 @@ export const getCurrentSession = createAsyncThunk(
   "auth/getCurrentSession",
   async (_, { rejectWithValue }) => {
     try {
+      console.log("ssssssss")
       const {
         data: { session },
         error,
       } = await supabase.auth.getSession();
+
+      console.log("kkkkkkkkkk", session)
       if (error) throw error;
 
       if (session) {
+        // Fetch complete employee data instead of just the role
         const { data: employeeData, error: employeeError } = await supabase
           .from("employees")
-          .select("*")
+          .select("*") // Select all fields
           .eq("id", session.user.id)
           .single();
 
@@ -66,7 +70,7 @@ export const getCurrentSession = createAsyncThunk(
 
         return {
           ...session.user,
-          ...employeeData,
+          ...employeeData, // Spread all employee data
           accessToken: session.access_token,
         };
       }
@@ -76,12 +80,11 @@ export const getCurrentSession = createAsyncThunk(
     }
   }
 );
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    loading: false,
+    loading: true,
     error: null,
   },
   reducers: {

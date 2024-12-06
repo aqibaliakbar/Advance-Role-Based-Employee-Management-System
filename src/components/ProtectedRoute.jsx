@@ -1,4 +1,3 @@
-// src/components/ProtectedRoute.jsx
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "@/hooks/use-toast";
